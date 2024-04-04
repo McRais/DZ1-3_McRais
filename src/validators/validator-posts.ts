@@ -1,7 +1,6 @@
-import {body, param} from "express-validator";
+import {body} from "express-validator";
 import {validatorErrorsCatcher} from "../middlewares/validator-errors-catcher";
 import {blogsRepo} from "../repo/blogs-repository";
-import {blogsDB} from "../database/DB";
 
 const titleValidator = body('title')
     .isString().withMessage('title must be a string')
@@ -30,9 +29,7 @@ const contentValidator = body('content')
 
 export const blogIdValidator = body('blogId').isString().trim()
     .custom((blogId) =>{
-        const blog = blogsRepo.getBlogById(blogId)
-        if (!blog){return false}
-        return true
+        return blogsRepo.getBlogById(blogId);
     }).withMessage("incorrect blogId")
 
 export const postValidation = () =>[titleValidator, shortDescValidator, contentValidator,blogIdValidator, validatorErrorsCatcher]

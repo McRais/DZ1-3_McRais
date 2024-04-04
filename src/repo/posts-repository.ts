@@ -15,6 +15,7 @@ export class postsRepo {
     static createNewPost(title:string, shortDescription:string, content:string, blogId: string) {
         //find the name of the blog
         const blog = blogsDB.find((blog) => blog.id === blogId)
+        if(!blog){throw new Error("No Blog")}
 
         const newPost: PostsType = {
             id: Date.now().toString(),
@@ -22,8 +23,8 @@ export class postsRepo {
             shortDescription: shortDescription,
             content: content,
             blogId: blogId,
-            blogName: blog.name                     //it will never be a problem because if there is no blog validator will break the operation
-        }                                           //just don't kill postValidation
+            blogName: blog.name
+        }
         postsDB.push(newPost)
         return newPost
     }
@@ -40,13 +41,14 @@ export class postsRepo {
         const index = postsDB.findIndex(post => post.id === id);
         //find the name of new blog
         const blog = blogsDB.find((blog) => blog.id === blogId)
+        if(!blog){throw new Error("No Blog")}
 
         postsDB[index].title = title
         postsDB[index].shortDescription = shortDescription
         postsDB[index].content = content
         postsDB[index].blogId = blogId
-        postsDB[index].blogName=blog.name                //it will never be a problem because if there is no blog validator will break the operation
-                                                         //just don't kill postValidation
+        postsDB[index].blogName=blog.name
+
         return postsDB[index]
     }
 
